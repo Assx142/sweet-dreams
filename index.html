@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌙 Сладкие сны — Бронирование номеров</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6fb; color: #222; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        
+        .site-header { background: linear-gradient(135deg,#2c3e7a,#4a69bd); color:#fff; padding: 20px 0; }
+        .site-header .logo { font-size: 28px; margin-bottom: 5px; }
+        .site-header .slogan { opacity: .85; margin-bottom: 15px; }
+        .site-header nav a { color:#fff; margin-right:15px; text-decoration:none; cursor: pointer; }
+        .site-header nav a:hover { text-decoration:underline; }
+        
+        .site-footer { background:#2c3e50; color:#fff; padding:20px 0; margin-top:40px; text-align:center; }
+        
+        .hero { text-align:center; padding: 40px 20px; background:#fff; border-radius:10px; margin:20px 0; }
+        .btn { display:inline-block; padding:10px 20px; background:#4a69bd; color:#fff;
+               border:none; border-radius:6px; cursor:pointer; text-decoration:none; margin: 5px; }
+        .btn:hover { background:#3c56a8; }
+        .btn-secondary { background:#888; }
+        .btn-ok { background:#27ae60; }
+        .btn-bad { background:#c0392b; }
+        .btn-small { padding:5px 10px; font-size:13px; }
+        
+        .filter-form { background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+        .filter-form label { display:flex; flex-direction:column; font-size:14px; }
+        .filter-form input, .filter-form select { padding:6px; border:1px solid #ccc; border-radius:4px; }
+        
+        .rooms-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+        .room-card { background:#fff; padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+        .room-img { background:#e0e6f0; height:140px; display:flex; align-items:center; justify-content:center; border-radius:6px; margin-bottom:10px; color:#888; font-size: 60px; }
+        .room-card h3 { margin-bottom:5px; }
+        .cat { color:#4a69bd; font-weight:bold; text-transform:uppercase; font-size:12px; }
+        .amenities { font-size:20px; margin:5px 0; }
+        .desc { font-size:14px; color:#555; margin:10px 0; }
+        
+        .booking-form, .login-form { background:#fff; padding:20px; border-radius:10px; max-width:500px; display:flex; flex-direction:column; gap:12px; }
+        .booking-form label, .login-form label { display:flex; flex-direction:column; font-size:14px; }
+        .booking-form input, .login-form input { padding:8px; border:1px solid #ccc; border-radius:4px; }
+        
+        .alert { padding:12px; border-radius:6px; margin-bottom:15px; }
+        .alert-success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+        .alert-error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+        .alert-error ul { margin-left:20px; }
+        
+        .admin-table { width:100%; background:#fff; border-collapse:collapse; border-radius:8px; overflow:hidden; }
+        .admin-table th, .admin-table td { padding:10px; border-bottom:1px solid #eee; text-align:left; font-size:14px; }
+        .admin-table th { background:#4a69bd; color:#fff; }
+        .status { padding:3px 8px; border-radius:10px; font-size:12px; color:#fff; }
+        .status-new { background:#f39c12; }
+        .status-ok { background:#27ae60; }
+        .status-bad { background:#c0392b; }
+        .empty { text-align:center; padding:30px; color:#888; }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="logo">🌙 Сладкие сны</h1>
+        <p class="slogan">Ваш идеальный отдых начинается здесь</p>
+        <nav>
+            <a onclick="showPage('home')">Главная</a>
+            <a onclick="showPage('catalog')">Каталог</a>
+            <a onclick="showPage('admin')">Админ-панель</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
+    <div id="page-home" class="page active">
+        <section class="hero">
+            <h2>Добро пожаловать в «Сладкие сны»!</h2>
+            <p>Комфортные номера разных категорий — от стандартных до люксов.</p>
+            <button class="btn" onclick="showPage('catalog')">Перейти в каталог</button>
+        </section>
+    </div>
+
+    <!-- КАТАЛОГ -->
+    <div id="page-catalog" class="page">
+        <h2>Каталог номеров</h2>
+        
+        <div class="filter-form">
+            <label>Категория:
+                <select id="filter-cat">
+                    <option value="">Все</option>
+                    <option value="standard">Стандарт</option>
+                    <option value="studio">Студия</option>
+                    <option value="lux">Люкс</option>
+                </select>
+            </label>
+            <label>Цена от:
+                <input type="number" id="filter-min" min="0" placeholder="0">
+            </label>
+            <label>до:
+                <input type="number" id="filter-max" min="0" placeholder="99999">
+            </label>
+            <label>Мест от:
+                <input type="number" id="filter-cap" min="1" placeholder="1">
+            </label>
+            <button class="btn" onclick="applyFilter()">Применить</button>
+            <button class="btn btn-secondary" onclick="resetFilter()">Сбросить</button>
+        </div>
+
+        <div id="rooms-container" class="rooms-grid"></div>
+    </div>
+
+    <!-- БРОНИРОВАНИЕ -->
+    <div id="page-booking" class="page">
+        <h2>Бронирование номера</h2>
+        <div id="booking-alert"></div>
+        <div id="booking-room-info"></div>
+        
+        <form class="booking-form" onsubmit="submitBooking(event)">
+            <input type="hidden" id="booking-room-id">
+            <label>Имя *
+                <input type="text" id="book-first" required pattern="[А-Яа-яЁё\s.\-]+" title="Только кириллица">
+            </label>
+            <label>Фамилия *
+                <input type="text" id="book-last" required pattern="[А-Яа-яЁё\s.\-]+">
+            </label>
+            <label>Телефон *
+                <input type="tel" id="book-phone" required placeholder="+7(XXX)XXX-XX-XX" pattern="\+7\(\d{3}\)\d{3}-\d{2}-\d{2}">
+            </label>
+            <label>E-mail *
+                <input type="email" id="book-email" required>
+            </label>
+            <label>Дата заезда *
+                <input type="date" id="book-checkin" required>
+            </label>
+            <label>Дата выезда *
+                <input type="date" id="book-checkout" required>
+            </label>
+            <button type="submit" class="btn">Отправить заявку</button>
+        </form>
+    </div>
+
+    <!-- АДМИН-ПАНЕЛЬ -->
+    <div id="page-admin" class="page">
+        <div id="admin-login">
+            <h2>Вход в панель управления</h2>
+            <form class="login-form" onsubmit="adminLogin(event)">
+                <label>Логин:
+                    <input type="text" id="admin-user" required>
+                </label>
+                <label>Пароль:
+                    <input type="password" id="admin-pass" required>
+                </label>
+                <button type="submit" class="btn">Войти</button>
+            </form>
+        </div>
+        
+        <div id="admin-panel" style="display:none;">
+            <h2>Панель управления — заявки на бронирование</h2>
+            <button class="btn btn-secondary" onclick="adminLogout()" style="margin-bottom: 20px;">Выйти</button>
+            <div id="bookings-container"></div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>📍 г. Москва, ул. Сновидений, 10</p>
+        <p>🕐 Круглосуточно, 24/7</p>
+        <p>📞 +7 (495) 123-45-67 | ✉️ info@sweet-dreams.ru</p>
+    </div>
+</footer>
+
+<script>
+// === ДАННЫЕ ===
+const rooms = [
+    { id: 1, category: 'standard', title: 'Стандарт 101', price: 2500, capacity: 2, area: 18, icon: '🛏️', has_ac: false, has_tv: true, has_fridge: true, has_wifi: true, description: 'Уютный номер для двоих' },
+    { id: 2, category: 'standard', title: 'Стандарт 102', price: 2700, capacity: 2, area: 20, icon: '🛏️', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Номер с кондиционером' },
+    { id: 3, category: 'studio', title: 'Студия 201', price: 4500, capacity: 3, area: 32, icon: '🏠', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Просторная студия' },
+    { id: 4, category: 'studio', title: 'Студия 202', price: 4800, capacity: 4, area: 35, icon: '🏠', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Студия для семьи' },
+    { id: 5, category: 'lux', title: 'Люкс 301', price: 8500, capacity: 2, area: 45, icon: '👑', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Номер класса люкс' },
+    { id: 6, category: 'lux', title: 'Люкс 302', price: 9500, capacity: 4, area: 55, icon: '👑', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Президентский люкс' }
+];
+
+const catLabels = { standard: 'Стандарт', studio: 'Студия', lux: 'Люкс' };
+
+// Загрузка заявок из localStorage
+let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+
+// === НАВИГАЦИЯ ===
+function showPage(pageName) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageName).classList.add('active');
+    
+    if (pageName === 'catalog') renderRooms();
+    if (pageName === 'admin') renderBookings();
+}
+
+// === КАТАЛОГ ===
+function renderRooms(filteredRooms = null) {
+    const container = document.getElementById('rooms-container');
+    const roomsToShow = filteredRooms || rooms;
+    
+    if (roomsToShow.length === 0) {
+        container.innerHTML = '<p class="empty">По вашему фильтру номеров не найдено.</p>';
+        return;
+    }
+    
+    container.innerHTML = roomsToShow.map(room => `
+        <div class="room-card">
+            <div class="room-img">${room.icon}</div>
+            <h3>${room.title}</h3>
+            <p class="cat">${catLabels[room.category]}</p>
+            <p><b>${room.price.toLocaleString('ru-RU')} ₽/сутки</b></p>
+            <p>Мест: ${room.capacity} · Площадь: ${room.area} м²</p>
+            <p class="amenities">
+                ${room.has_ac ? '❄️' : ''}
+                ${room.has_tv ? '📺' : ''}
+                ${room.has_fridge ? '🧊' : ''}
+                ${room.has_wifi ? '📶' : ''}
+            </p>
+            <p class="desc">${room.description}</p>
+            <button class="btn" onclick="openBooking(${room.id})">Забронировать</button>
+        </div>
+    `).join('');
+}
+
+function applyFilter() {
+    const cat = document.getElementById('filter-cat').value;
+    const min = parseFloat(document.getElementById('filter-min').value) || 0;
+    const max = parseFloat(document.getElementById('filter-max').value) || 99999;
+    const cap = parseInt(document.getElementById('filter-cap').value) || 1;
+    
+    const filtered = rooms.filter(r => {
+        if (cat && r.category !== cat) return false;
+        if (r.price < min || r.price > max) return false;
+        if (r.capacity < cap) return false;
+        return true;
+    });
+    
+    renderRooms(filtered);
+}
+
+function resetFilter() {
+    document.getElementById('filter-cat').value = '';
+    document.getElementById('filter-min').value = '';
+    document.getElementById('filter-max').value = '';
+    document.getElementById('filter-cap').value = '';
+    renderRooms();
+}
+
+// === БРОНИРОВАНИЕ ===
+function openBooking(roomId) {
+    const room = rooms.find(r => r.id === roomId);
+    document.getElementById('booking-room-id').value = roomId;
+    document.getElementById('booking-room-info').innerHTML = `
+        <p>Вы бронируете: <b>${room.title}</b> — ${room.price.toLocaleString('ru-RU')} ₽/сутки</p>
+    `;
+    showPage('booking');
+}
+
+function submitBooking(e) {
+    e.preventDefault();
+    
+    const roomId = parseInt(document.getElementById('booking-room-id').value);
+    const firstName = document.getElementById('book-first').value.trim();
+    const lastName = document.getElementById('book-last').value.trim();
+    const phone = document.getElementById('book-phone').value.trim();
+    const email = document.getElementById('book-email').value.trim();
+    const checkIn = document.getElementById('book-checkin').value;
+    const checkOut = document.getElementById('book-checkout').value;
+    
+    // Валидация
+    const errors = [];
+    if (!/^[А-Яа-яЁё\s.\-]+$/.test(firstName)) errors.push('Имя может содержать только кириллицу, пробелы, точки и тире.');
+    if (!/^[А-Яа-яЁё\s.\-]+$/.test(lastName)) errors.push('Фамилия может содержать только кириллицу, пробелы, точки и тире.');
+    if (!/^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/.test(phone)) errors.push('Телефон должен быть в формате +7(XXX)XXX-XX-XX');
+    if (!email.includes('@')) errors.push('Некорректный e-mail.');
+    
+    const today = new Date().toISOString().split('T')[0];
+    if (checkIn < today) errors.push('Дата заезда не может быть раньше текущей даты.');
+    if (checkOut <= checkIn) errors.push('Дата выезда должна быть позже даты заезда.');
+    
+    // Проверка занятости
+    if (!errors.length) {
+        const busy = bookings.find(b => 
+            b.roomId === roomId && 
+            b.status === 'approved' &&
+            b.checkIn < checkOut && 
+            b.checkOut > checkIn
+        );
+        if (busy) errors.push('На выбранные даты номер уже забронирован.');
+    }
+    
+    const alertDiv = document.getElementById('booking-alert');
+    if (errors.length) {
+        alertDiv.innerHTML = `<div class="alert alert-error"><ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
+        return;
+    }
+    
+    const booking = {
+        id: Date.now(),
+        roomId,
+        firstName,
+        lastName,
+        phone,
+        email,
+        checkIn,
+        checkOut,
+        status: 'new',
+        createdAt: new Date().toISOString()
+    };
+    
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+    alertDiv.innerHTML = '<div class="alert alert-success">✅ Ваша заявка успешно отправлена! Ожидайте подтверждения.</div>';
+    e.target.reset();
+}
+
+// === АДМИН-ПАНЕЛЬ ===
+function adminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-user').value;
+    const pass = document.getElementById('admin-pass').value;
+    
+    if (user === 'hotel123' && pass === 'adminHotel') {
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        renderBookings();
+    } else {
+        alert('Неверный логин или пароль!');
+    }
+}
+
+function adminLogout() {
+    document.getElementById('admin-login').style.display = 'block';
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('admin-user').value = '';
+    document.getElementById('admin-pass').value = '';
+}
+
+function renderBookings() {
+    const container = document.getElementById('bookings-container');
+    
+    if (bookings.length === 0) {
+        container.innerHTML = '<p class="empty">Заявок пока нет.</p>';
+        return;
+    }
+    
+    const statusLabels = { new: 'Новая', approved: 'Одобрена', rejected: 'Отклонена' };
+    const statusClass = { new: 'status-new', approved: 'status-ok', rejected: 'status-bad' };
+    
+    container.innerHTML = `
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>#</th><th>Номер</th><th>Гость</th><th>Телефон</th><th>E-mail</th>
+                    <th>Заезд</th><th>Выезд</th><th>Статус</th><th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${bookings.map(b => {
+                    const room = rooms.find(r => r.id === b.roomId);
+                    return `
+                        <tr>
+                            <td>${b.id}</td>
+                            <td>${room ? room.title : 'Неизвестно'}</td>
+                            <td>${b.lastName} ${b.firstName}</td>
+                            <td>${b.phone}</td>
+                            <td>${b.email}</td>
+                            <td>${b.checkIn}</td>
+                            <td>${b.checkOut}</td>
+                            <td><span class="status ${statusClass[b.status]}">${statusLabels[b.status]}</span></td>
+                            <td>
+                                ${b.status !== 'approved' ? `<button class="btn btn-small btn-ok" onclick="updateBooking(${b.id}, 'approved')">Одобрить</button>` : ''}
+                                ${b.status !== 'rejected' ? `<button class="btn btn-small btn-bad" onclick="updateBooking(${b.id}, 'rejected')">Отклонить</button>` : ''}
+                                <button class="btn btn-small btn-bad" onclick="deleteBooking(${b.id})">Удалить</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+function updateBooking(id, status) {
+    const booking = bookings.find(b => b.id === id);
+    if (booking) {
+        booking.status = status;
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        renderBookings();
+    }
+}
+
+function deleteBooking(id) {
+    if (confirm('Удалить заявку?')) {
+        bookings = bookings.filter(b => b.id !== id);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        renderBookings();
+    }
+}
+
+// Инициализация
+renderRooms();
+</script>
+
+</body>
+</html>
