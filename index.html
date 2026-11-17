@@ -3,61 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌙 Сладкие сны — Бронирование номеров</title>
+    <title>🌙 Сладкие сны — Бронирование номеров в гостинице</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6fb; color: #222; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
         
-        .site-header { background: linear-gradient(135deg,#2c3e7a,#4a69bd); color:#fff; padding: 20px 0; }
-        .site-header .logo { font-size: 28px; margin-bottom: 5px; }
-        .site-header .slogan { opacity: .85; margin-bottom: 15px; }
-        .site-header nav a { color:#fff; margin-right:15px; text-decoration:none; cursor: pointer; }
-        .site-header nav a:hover { text-decoration:underline; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
         
-        .site-footer { background:#2c3e50; color:#fff; padding:20px 0; margin-top:40px; text-align:center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
-        .hero { text-align:center; padding: 40px 20px; background:#fff; border-radius:10px; margin:20px 0; }
-        .btn { display:inline-block; padding:10px 20px; background:#4a69bd; color:#fff;
-               border:none; border-radius:6px; cursor:pointer; text-decoration:none; margin: 5px; }
-        .btn:hover { background:#3c56a8; }
-        .btn-secondary { background:#888; }
-        .btn-ok { background:#27ae60; }
-        .btn-bad { background:#c0392b; }
-        .btn-small { padding:5px 10px; font-size:13px; }
+        /* ШАПКА */
+        .site-header { 
+            background: rgba(255,255,255,0.95); 
+            backdrop-filter: blur(10px);
+            padding: 25px 0; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .site-header .logo { 
+            font-size: 32px; 
+            color: #764ba2;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .site-header .slogan { 
+            color: #666; 
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        .site-header nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .site-header nav a { 
+            color: #764ba2; 
+            text-decoration: none; 
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .site-header nav a:hover { 
+            background: #764ba2; 
+            color: #fff;
+        }
         
-        .filter-form { background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-        .filter-form label { display:flex; flex-direction:column; font-size:14px; }
-        .filter-form input, .filter-form select { padding:6px; border:1px solid #ccc; border-radius:4px; }
+        /* ПОДВАЛ */
+        .site-footer { 
+            background: rgba(0,0,0,0.8); 
+            color: #fff; 
+            padding: 30px 0; 
+            margin-top: 50px; 
+            text-align: center;
+        }
+        .site-footer p { margin: 8px 0; }
         
-        .rooms-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
-        .room-card { background:#fff; padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
-        .room-img { background:#e0e6f0; height:140px; display:flex; align-items:center; justify-content:center; border-radius:6px; margin-bottom:10px; color:#888; font-size: 60px; }
-        .room-card h3 { margin-bottom:5px; }
-        .cat { color:#4a69bd; font-weight:bold; text-transform:uppercase; font-size:12px; }
-        .amenities { font-size:20px; margin:5px 0; }
-        .desc { font-size:14px; color:#555; margin:10px 0; }
+        /* ГЕРОЙ */
+        .hero { 
+            text-align: center; 
+            padding: 60px 20px; 
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px; 
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .hero h2 { 
+            font-size: 36px; 
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        .hero p { font-size: 18px; color: #666; margin-bottom: 25px; }
         
-        .booking-form, .login-form { background:#fff; padding:20px; border-radius:10px; max-width:500px; display:flex; flex-direction:column; gap:12px; }
-        .booking-form label, .login-form label { display:flex; flex-direction:column; font-size:14px; }
-        .booking-form input, .login-form input { padding:8px; border:1px solid #ccc; border-radius:4px; }
+        /* КНОПКИ */
+        .btn { 
+            display: inline-block; 
+            padding: 12px 28px; 
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.4);
+        }
+        .btn-secondary { background: #999; }
+        .btn-ok { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .btn-bad { background: linear-gradient(135deg, #eb3349, #f45c43); }
+        .btn-small { padding: 6px 14px; font-size: 13px; }
         
-        .alert { padding:12px; border-radius:6px; margin-bottom:15px; }
-        .alert-success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
-        .alert-error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
-        .alert-error ul { margin-left:20px; }
+        /* ФИЛЬТР */
+        .filter-form { 
+            background: rgba(255,255,255,0.95);
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            align-items: flex-end;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .filter-form label { 
+            display: flex; 
+            flex-direction: column; 
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+        .filter-form input, .filter-form select { 
+            padding: 10px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .filter-form input:focus, .filter-form select:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
         
-        .admin-table { width:100%; background:#fff; border-collapse:collapse; border-radius:8px; overflow:hidden; }
-        .admin-table th, .admin-table td { padding:10px; border-bottom:1px solid #eee; text-align:left; font-size:14px; }
-        .admin-table th { background:#4a69bd; color:#fff; }
-        .status { padding:3px 8px; border-radius:10px; font-size:12px; color:#fff; }
-        .status-new { background:#f39c12; }
-        .status-ok { background:#27ae60; }
-        .status-bad { background:#c0392b; }
-        .empty { text-align:center; padding:30px; color:#888; }
+        /* СЕТКА НОМЕРОВ */
+        .rooms-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 25px; 
+        }
+        .room-card { 
+            background: #fff; 
+            border-radius: 15px; 
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+        .room-img { 
+            height: 220px; 
+            background: #e0e6f0; 
+            overflow: hidden;
+        }
+        .room-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .room-card:hover .room-img img {
+            transform: scale(1.05);
+        }
+        .room-content { padding: 20px; }
+        .room-card h3 { 
+            font-size: 22px; 
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .cat { 
+            color: #764ba2; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .price { 
+            font-size: 24px; 
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .amenities { 
+            font-size: 16px; 
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .desc { 
+            font-size: 14px; 
+            color: #666; 
+            margin: 10px 0;
+            line-height: 1.5;
+        }
         
+        /* ФОРМЫ */
+        .booking-form, .login-form { 
+            background: rgba(255,255,255,0.95);
+            padding: 30px; 
+            border-radius: 15px; 
+            max-width: 500px; 
+            margin: 20px auto;
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .booking-form label, .login-form label { 
+            display: flex; 
+            flex-direction: column; 
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+        .booking-form input, .login-form input { 
+            padding: 12px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .booking-form input:focus, .login-form input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        
+        /* АЛЕРТЫ */
+        .alert { 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 20px;
+        }
+        .alert-success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 2px solid #c3e6cb;
+        }
+        .alert-error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 2px solid #f5c6cb;
+        }
+        .alert-error ul { margin-left: 20px; margin-top: 10px; }
+        
+        /* ТАБЛИЦА АДМИНКИ */
+        .admin-table { 
+            width: 100%; 
+            background: #fff; 
+            border-collapse: collapse; 
+            border-radius: 15px; 
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .admin-table th, .admin-table td { 
+            padding: 12px; 
+            border-bottom: 1px solid #eee; 
+            text-align: left; 
+            font-size: 14px; 
+        }
+        .admin-table th { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: #fff;
+            font-weight: 600;
+        }
+        .status { 
+            padding: 5px 12px; 
+            border-radius: 15px; 
+            font-size: 12px; 
+            color: #fff;
+            font-weight: 600;
+        }
+        .status-new { background: #f39c12; }
+        .status-ok { background: #27ae60; }
+        .status-bad { background: #c0392b; }
+        
+        /* СТРАНИЦЫ */
         .page { display: none; }
-        .page.active { display: block; }
+        .page.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .empty { 
+            text-align: center; 
+            padding: 40px; 
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .room-info {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .rooms-grid { grid-template-columns: 1fr; }
+            .hero h2 { font-size: 28px; }
+            .filter-form { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
@@ -67,48 +315,72 @@
         <h1 class="logo">🌙 Сладкие сны</h1>
         <p class="slogan">Ваш идеальный отдых начинается здесь</p>
         <nav>
-            <a onclick="showPage('home')">Главная</a>
-            <a onclick="showPage('catalog')">Каталог</a>
-            <a onclick="showPage('admin')">Админ-панель</a>
+            <a onclick="showPage('home')">🏠 Главная</a>
+            <a onclick="showPage('catalog')">📋 Каталог</a>
+            <a onclick="showPage('admin')">⚙️ Админ-панель</a>
         </nav>
     </div>
 </header>
 
 <main class="container">
 
-    <!-- ГЛАВНАЯ СТРАНИЦА -->
+    <!-- ГЛАВНАЯ -->
     <div id="page-home" class="page active">
         <section class="hero">
             <h2>Добро пожаловать в «Сладкие сны»!</h2>
-            <p>Комфортные номера разных категорий — от стандартных до люксов.</p>
-            <button class="btn" onclick="showPage('catalog')">Перейти в каталог</button>
+            <p>Комфортные номера разных категорий — от уютных стандартных до роскошных люксов</p>
+            <button class="btn" onclick="showPage('catalog')">🔍 Перейти в каталог</button>
         </section>
+        
+        <div class="rooms-grid">
+            <div class="room-card">
+                <div class="room-content" style="text-align:center; padding: 40px 20px;">
+                    <h3>🛏️ Стандартный</h3>
+                    <p class="desc">Полный санузел, двуспальная кровать, телевизор</p>
+                    <p class="price">от 3 000 ₽/сутки</p>
+                </div>
+            </div>
+            <div class="room-card">
+                <div class="room-content" style="text-align:center; padding: 40px 20px;">
+                    <h3>🏠 Студия</h3>
+                    <p class="desc">Кухонный уголок, полный санузел, двуспальная кровать, телевизор, холодильник</p>
+                    <p class="price">от 4 600 ₽/сутки</p>
+                </div>
+            </div>
+            <div class="room-card">
+                <div class="room-content" style="text-align:center; padding: 40px 20px;">
+                    <h3>👑 Люкс</h3>
+                    <p class="desc">Двухкомнатный, полный санузел, двуспальная кровать, телевизор, холодильник, кондиционер</p>
+                    <p class="price">от 8 500 ₽/сутки</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- КАТАЛОГ -->
     <div id="page-catalog" class="page">
-        <h2>Каталог номеров</h2>
+        <h2 style="color:#fff; text-align:center; margin-bottom: 20px; font-size: 32px;">📋 Каталог номеров</h2>
         
         <div class="filter-form">
             <label>Категория:
                 <select id="filter-cat">
-                    <option value="">Все</option>
-                    <option value="standard">Стандарт</option>
+                    <option value="">Все категории</option>
+                    <option value="standard">Стандартный</option>
                     <option value="studio">Студия</option>
                     <option value="lux">Люкс</option>
                 </select>
             </label>
-            <label>Цена от:
-                <input type="number" id="filter-min" min="0" placeholder="0">
+            <label>Цена от (₽):
+                <input type="number" id="filter-min" min="0" placeholder="3000">
             </label>
-            <label>до:
-                <input type="number" id="filter-max" min="0" placeholder="99999">
+            <label>до (₽):
+                <input type="number" id="filter-max" min="0" placeholder="15000">
             </label>
             <label>Мест от:
                 <input type="number" id="filter-cap" min="1" placeholder="1">
             </label>
-            <button class="btn" onclick="applyFilter()">Применить</button>
-            <button class="btn btn-secondary" onclick="resetFilter()">Сбросить</button>
+            <button class="btn" onclick="applyFilter()">✓ Применить</button>
+            <button class="btn btn-secondary" onclick="resetFilter()">✕ Сбросить</button>
         </div>
 
         <div id="rooms-container" class="rooms-grid"></div>
@@ -116,20 +388,20 @@
 
     <!-- БРОНИРОВАНИЕ -->
     <div id="page-booking" class="page">
-        <h2>Бронирование номера</h2>
+        <h2 style="color:#fff; text-align:center; margin-bottom: 20px;">📝 Бронирование номера</h2>
         <div id="booking-alert"></div>
         <div id="booking-room-info"></div>
         
         <form class="booking-form" onsubmit="submitBooking(event)">
             <input type="hidden" id="booking-room-id">
             <label>Имя *
-                <input type="text" id="book-first" required pattern="[А-Яа-яЁё\s.\-]+" title="Только кириллица">
+                <input type="text" id="book-first" required pattern="[А-Яа-яЁё\s.\-]+" title="Только кириллица, пробелы, точки и тире">
             </label>
             <label>Фамилия *
                 <input type="text" id="book-last" required pattern="[А-Яа-яЁё\s.\-]+">
             </label>
             <label>Телефон *
-                <input type="tel" id="book-phone" required placeholder="+7(XXX)XXX-XX-XX" pattern="\+7\(\d{3}\)\d{3}-\d{2}-\d{2}">
+                <input type="tel" id="book-phone" required placeholder="+7(999)123-45-67" pattern="\+7\(\d{3}\)\d{3}-\d{2}-\d{2}">
             </label>
             <label>E-mail *
                 <input type="email" id="book-email" required>
@@ -140,14 +412,14 @@
             <label>Дата выезда *
                 <input type="date" id="book-checkout" required>
             </label>
-            <button type="submit" class="btn">Отправить заявку</button>
+            <button type="submit" class="btn">📤 Отправить заявку</button>
         </form>
     </div>
 
     <!-- АДМИН-ПАНЕЛЬ -->
     <div id="page-admin" class="page">
         <div id="admin-login">
-            <h2>Вход в панель управления</h2>
+            <h2 style="color:#fff; text-align:center; margin-bottom: 20px;">🔐 Вход в панель управления</h2>
             <form class="login-form" onsubmit="adminLogin(event)">
                 <label>Логин:
                     <input type="text" id="admin-user" required>
@@ -160,8 +432,8 @@
         </div>
         
         <div id="admin-panel" style="display:none;">
-            <h2>Панель управления — заявки на бронирование</h2>
-            <button class="btn btn-secondary" onclick="adminLogout()" style="margin-bottom: 20px;">Выйти</button>
+            <h2 style="color:#fff; text-align:center; margin-bottom: 20px;">⚙️ Панель управления — заявки на бронирование</h2>
+            <button class="btn btn-secondary" onclick="adminLogout()" style="margin-bottom: 20px;">🚪 Выйти</button>
             <div id="bookings-container"></div>
         </div>
     </div>
@@ -177,25 +449,96 @@
 </footer>
 
 <script>
-// === ДАННЫЕ ===
+// === ДАННЫЕ НОМЕРОВ ===
 const rooms = [
-    { id: 1, category: 'standard', title: 'Стандарт 101', price: 2500, capacity: 2, area: 18, icon: '🛏️', has_ac: false, has_tv: true, has_fridge: true, has_wifi: true, description: 'Уютный номер для двоих' },
-    { id: 2, category: 'standard', title: 'Стандарт 102', price: 2700, capacity: 2, area: 20, icon: '🛏️', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Номер с кондиционером' },
-    { id: 3, category: 'studio', title: 'Студия 201', price: 4500, capacity: 3, area: 32, icon: '🏠', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Просторная студия' },
-    { id: 4, category: 'studio', title: 'Студия 202', price: 4800, capacity: 4, area: 35, icon: '🏠', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Студия для семьи' },
-    { id: 5, category: 'lux', title: 'Люкс 301', price: 8500, capacity: 2, area: 45, icon: '👑', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Номер класса люкс' },
-    { id: 6, category: 'lux', title: 'Люкс 302', price: 9500, capacity: 4, area: 55, icon: '👑', has_ac: true, has_tv: true, has_fridge: true, has_wifi: true, description: 'Президентский люкс' }
+    { 
+        id: 1, 
+        category: 'standard', 
+        title: 'Стандартный №101', 
+        price: 3000, 
+        capacity: 2, 
+        area: 22, 
+        image: 'images/standard1.jpg',
+        amenities: ['🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор'],
+        description: 'Уютный номер с полным санузлом, удобной двуспальной кроватью и телевизором. Идеален для коротких поездок.'
+    },
+    { 
+        id: 2, 
+        category: 'standard', 
+        title: 'Стандартный №102', 
+        price: 3500, 
+        capacity: 2, 
+        area: 24, 
+        image: 'images/standard2.jpg',
+        amenities: ['🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор'],
+        description: 'Светлый номер с видом на город. Полный санузел, двуспальная кровать, телевизор.'
+    },
+    { 
+        id: 3, 
+        category: 'studio', 
+        title: 'Студия №201', 
+        price: 4600, 
+        capacity: 2, 
+        area: 32, 
+        image: 'images/studio1.jpg',
+        amenities: ['🍳 Кухонный уголок', '🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор', '🧊 Холодильник'],
+        description: 'Просторная студия с кухонным уголком и холодильником. Отличный выбор для длительного проживания.'
+    },
+    { 
+        id: 4, 
+        category: 'studio', 
+        title: 'Студия №202', 
+        price: 5200, 
+        capacity: 3, 
+        area: 35, 
+        image: 'images/studio2.jpg',
+        amenities: ['🍳 Кухонный уголок', '🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор', '🧊 Холодильник'],
+        description: 'Современная студия с полноценной кухней. Подходит для семьи из 3 человек.'
+    },
+    { 
+        id: 5, 
+        category: 'studio', 
+        title: 'Студия №203', 
+        price: 6200, 
+        capacity: 3, 
+        area: 38, 
+        image: 'images/studio3.jpg',
+        amenities: ['🍳 Кухонный уголок', '🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор', '🧊 Холодильник'],
+        description: 'Премиум-студия с дизайнерским ремонтом и всеми удобствами для комфортного проживания.'
+    },
+    { 
+        id: 6, 
+        category: 'lux', 
+        title: 'Люкс №301', 
+        price: 8500, 
+        capacity: 2, 
+        area: 55, 
+        image: 'images/lux1.jpg',
+        amenities: ['🛋️ Двухкомнатный', '🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор', '🧊 Холодильник', '❄️ Кондиционер'],
+        description: 'Роскошный двухкомнатный номер с гостиной и спальней. Полный набор удобств для максимального комфорта.'
+    },
+    { 
+        id: 7, 
+        category: 'lux', 
+        title: 'Люкс №302', 
+        price: 12000, 
+        capacity: 4, 
+        area: 70, 
+        image: 'images/lux2.jpg',
+        amenities: ['🛋️ Двухкомнатный', '🚿 Санузел', '🛏️ Двуспальная кровать', '📺 Телевизор', '🧊 Холодильник', '❄️ Кондиционер'],
+        description: 'Президентский люкс с панорамным видом. Две комнаты, гостиная, спальня, все удобства премиум-класса.'
+    }
 ];
 
-const catLabels = { standard: 'Стандарт', studio: 'Студия', lux: 'Люкс' };
+const catLabels = { standard: 'Стандартный', studio: 'Студия', lux: 'Люкс' };
 
-// Загрузка заявок из localStorage
 let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
 
 // === НАВИГАЦИЯ ===
 function showPage(pageName) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageName).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
     if (pageName === 'catalog') renderRooms();
     if (pageName === 'admin') renderBookings();
@@ -207,25 +550,24 @@ function renderRooms(filteredRooms = null) {
     const roomsToShow = filteredRooms || rooms;
     
     if (roomsToShow.length === 0) {
-        container.innerHTML = '<p class="empty">По вашему фильтру номеров не найдено.</p>';
+        container.innerHTML = '<p class="empty">😔 По вашему фильтру номеров не найдено. Попробуйте изменить параметры.</p>';
         return;
     }
     
     container.innerHTML = roomsToShow.map(room => `
         <div class="room-card">
-            <div class="room-img">${room.icon}</div>
-            <h3>${room.title}</h3>
-            <p class="cat">${catLabels[room.category]}</p>
-            <p><b>${room.price.toLocaleString('ru-RU')} ₽/сутки</b></p>
-            <p>Мест: ${room.capacity} · Площадь: ${room.area} м²</p>
-            <p class="amenities">
-                ${room.has_ac ? '❄️' : ''}
-                ${room.has_tv ? '📺' : ''}
-                ${room.has_fridge ? '🧊' : ''}
-                ${room.has_wifi ? '📶' : ''}
-            </p>
-            <p class="desc">${room.description}</p>
-            <button class="btn" onclick="openBooking(${room.id})">Забронировать</button>
+            <div class="room-img">
+                <img src="${room.image}" alt="${room.title}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22220%22><rect fill=%22%23ddd%22 width=%22300%22 height=%22220%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22>Нет фото</text></svg>'">
+            </div>
+            <div class="room-content">
+                <h3>${room.title}</h3>
+                <p class="cat">${catLabels[room.category]}</p>
+                <p class="price">${room.price.toLocaleString('ru-RU')} ₽/сутки</p>
+                <p>👥 Мест: ${room.capacity} · 📐 Площадь: ${room.area} м²</p>
+                <div class="amenities">${room.amenities.join(' · ')}</div>
+                <p class="desc">${room.description}</p>
+                <button class="btn" onclick="openBooking(${room.id})" style="width:100%;">📅 Забронировать</button>
+            </div>
         </div>
     `).join('');
 }
@@ -259,7 +601,11 @@ function openBooking(roomId) {
     const room = rooms.find(r => r.id === roomId);
     document.getElementById('booking-room-id').value = roomId;
     document.getElementById('booking-room-info').innerHTML = `
-        <p>Вы бронируете: <b>${room.title}</b> — ${room.price.toLocaleString('ru-RU')} ₽/сутки</p>
+        <div class="room-info">
+            <h3>Вы бронируете: ${room.title}</h3>
+            <p class="cat">${catLabels[room.category]}</p>
+            <p class="price">${room.price.toLocaleString('ru-RU')} ₽/сутки</p>
+        </div>
     `;
     showPage('booking');
 }
@@ -275,7 +621,6 @@ function submitBooking(e) {
     const checkIn = document.getElementById('book-checkin').value;
     const checkOut = document.getElementById('book-checkout').value;
     
-    // Валидация
     const errors = [];
     if (!/^[А-Яа-яЁё\s.\-]+$/.test(firstName)) errors.push('Имя может содержать только кириллицу, пробелы, точки и тире.');
     if (!/^[А-Яа-яЁё\s.\-]+$/.test(lastName)) errors.push('Фамилия может содержать только кириллицу, пробелы, точки и тире.');
@@ -286,7 +631,6 @@ function submitBooking(e) {
     if (checkIn < today) errors.push('Дата заезда не может быть раньше текущей даты.');
     if (checkOut <= checkIn) errors.push('Дата выезда должна быть позже даты заезда.');
     
-    // Проверка занятости
     if (!errors.length) {
         const busy = bookings.find(b => 
             b.roomId === roomId && 
@@ -299,7 +643,7 @@ function submitBooking(e) {
     
     const alertDiv = document.getElementById('booking-alert');
     if (errors.length) {
-        alertDiv.innerHTML = `<div class="alert alert-error"><ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
+        alertDiv.innerHTML = `<div class="alert alert-error"><b>❌ Ошибки:</b><ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`;
         return;
     }
     
@@ -319,7 +663,7 @@ function submitBooking(e) {
     bookings.push(booking);
     localStorage.setItem('bookings', JSON.stringify(bookings));
     
-    alertDiv.innerHTML = '<div class="alert alert-success">✅ Ваша заявка успешно отправлена! Ожидайте подтверждения.</div>';
+    alertDiv.innerHTML = '<div class="alert alert-success">✅ Ваша заявка успешно отправлена! Ожидайте подтверждения администратора.</div>';
     e.target.reset();
 }
 
@@ -334,7 +678,7 @@ function adminLogin(e) {
         document.getElementById('admin-panel').style.display = 'block';
         renderBookings();
     } else {
-        alert('Неверный логин или пароль!');
+        alert('❌ Неверный логин или пароль!');
     }
 }
 
@@ -349,7 +693,7 @@ function renderBookings() {
     const container = document.getElementById('bookings-container');
     
     if (bookings.length === 0) {
-        container.innerHTML = '<p class="empty">Заявок пока нет.</p>';
+        container.innerHTML = '<p class="empty">📭 Заявок пока нет.</p>';
         return;
     }
     
@@ -357,6 +701,7 @@ function renderBookings() {
     const statusClass = { new: 'status-new', approved: 'status-ok', rejected: 'status-bad' };
     
     container.innerHTML = `
+        <div style="overflow-x: auto;">
         <table class="admin-table">
             <thead>
                 <tr>
@@ -378,15 +723,16 @@ function renderBookings() {
                             <td>${b.checkOut}</td>
                             <td><span class="status ${statusClass[b.status]}">${statusLabels[b.status]}</span></td>
                             <td>
-                                ${b.status !== 'approved' ? `<button class="btn btn-small btn-ok" onclick="updateBooking(${b.id}, 'approved')">Одобрить</button>` : ''}
-                                ${b.status !== 'rejected' ? `<button class="btn btn-small btn-bad" onclick="updateBooking(${b.id}, 'rejected')">Отклонить</button>` : ''}
-                                <button class="btn btn-small btn-bad" onclick="deleteBooking(${b.id})">Удалить</button>
+                                ${b.status !== 'approved' ? `<button class="btn btn-small btn-ok" onclick="updateBooking(${b.id}, 'approved')">✓ Одобрить</button>` : ''}
+                                ${b.status !== 'rejected' ? `<button class="btn btn-small btn-bad" onclick="updateBooking(${b.id}, 'rejected')">✕ Отклонить</button>` : ''}
+                                <button class="btn btn-small btn-bad" onclick="deleteBooking(${b.id})">🗑 Удалить</button>
                             </td>
                         </tr>
                     `;
                 }).join('')}
             </tbody>
         </table>
+        </div>
     `;
 }
 
